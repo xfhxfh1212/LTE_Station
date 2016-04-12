@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Plugin</name>
+    </assembly>
+    <members>
+        <member name="T:COM.ZCTT.AGI.Plugin.IPlugin">
+            <summary>
+            插件类
+            </summary>
+        </member>
+        <member name="M:COM.ZCTT.AGI.Plugin.IPlugin.Load">
+            <summary>
+            初始化该模块
+            </summary>
+        </member>
+        <member name="T:Plugin.GloabeControl">
+            <summary>
+            全局布局区域
+            </summary>
+        </member>
+        <member name="P:Plugin.GloabeControl.RightContent">
+            <summary>
+             主窗口数据显示区
+             </summary>
+        </member>
+        <member name="P:Plugin.GloabeControl.cellSearchDockPanel">
+            <summary>
+            主窗口数据显示区、小区搜索停留区域
+            </summary>
+        </member>
+        <member name="P:Plugin.GloabeControl.findSTMSIDockPanel">
+            <summary>
+            主窗口数据显示区、查找STMSI停留区域
+            </summary>
+        </member>
+        <member name="P:Plugin.GloabeControl.oriFindingDockPanel">
+            <summary>
+            主窗口数据显示区、测向停留区域
+            </summary>
+        </member>
+    </members>
+</doc>

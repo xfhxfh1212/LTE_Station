@@ -1,0 +1,70 @@
+D:\项目\LTE基站\LTE\obj\x86\Debug\LTE.Properties.Resources.resources
+D:\项目\LTE基站\LTE\obj\x86\Debug\LTE.csproj.GenerateResource.Cache
+D:\项目\LTE基站\LTE\obj\x86\Debug\LTE.csprojResolveAssemblyReference.cache
+D:\项目\LTE基站\LTE\obj\x86\Debug\LTE.MainForm.resources
+D:\项目\LTE基站\OUTPUT\LTE.exe
+D:\项目\LTE基站\OUTPUT\LTE.pdb
+D:\项目\LTE基站\LTE\obj\x86\Debug\LTE.exe
+D:\项目\LTE基站\LTE\obj\x86\Debug\LTE.pdb
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.exe
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.pdb
+D:\项目\LTE基站 - 副本\OUTPUT\LTE.exe
+D:\项目\LTE基站 - 副本\OUTPUT\LTE.pdb
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.csprojResolveAssemblyReference.cache
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.MainForm.resources
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.Properties.Resources.resources
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.csproj.GenerateResource.Cache
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.ImsiBankForm.resources
+D:\项目\LTE基站 - 副本\LTE\obj\x86\Debug\LTE.CtrlCmdForm.resources
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.exe
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.pdb
+D:\项目\LTE基站7.29\OUTPUT\LTE.exe
+D:\项目\LTE基站7.29\OUTPUT\LTE.pdb
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.csprojResolveAssemblyReference.cache
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.CtrlCmdForm.resources
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.ImsiBankForm.resources
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.MainForm.resources
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.Properties.Resources.resources
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.csproj.GenerateResource.Cache
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.NewTacForm.resources
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.DlSniffForm.resources
+D:\项目\LTE基站7.29\LTE\obj\x86\Debug\LTE.NcParaForm.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.exe
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.pdb
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.csprojResolveAssemblyReference.cache
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.CtrlCmdForm.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.DlSniffForm.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.ImsiBankForm.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.MainForm.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.NcParaForm.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.NewTacForm.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.Properties.Resources.resources
+D:\项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.csproj.GenerateResource.Cache
+D:\项目\LTE基站8.3\OUTPUT\LTE.exe
+D:\项目\LTE基站8.3\OUTPUT\LTE.pdb
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.exe
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.pdb
+D:\实习\C#项目\LTE基站8.3\OUTPUT\LTE.exe
+D:\实习\C#项目\LTE基站8.3\OUTPUT\LTE.pdb
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.csprojResolveAssemblyReference.cache
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.CtrlCmdForm.resources
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.DlSniffForm.resources
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.ImsiBankForm.resources
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.MainForm.resources
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.NcParaForm.resources
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.NewTacForm.resources
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.Properties.Resources.resources
+D:\实习\C#项目\LTE基站8.3\LTE\obj\x86\Debug\LTE.csproj.GenerateResource.Cache
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.exe
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.pdb
+D:\实习\C#项目\LTE基站10.16\OUTPUT\LTE.exe
+D:\实习\C#项目\LTE基站10.16\OUTPUT\LTE.pdb
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.csprojResolveAssemblyReference.cache
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.CtrlCmdForm.resources
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.DlSniffForm.resources
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.ImsiBankForm.resources
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.MainForm.resources
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.NcParaForm.resources
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.NewTacForm.resources
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.Properties.Resources.resources
+D:\实习\C#项目\LTE基站10.16\LTE\obj\x86\Debug\LTE.csproj.GenerateResource.Cache

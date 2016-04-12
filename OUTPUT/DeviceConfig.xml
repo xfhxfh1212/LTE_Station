@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DeviceConfiguration>
+  <Device name="设备0011" ImageKey="disconnect.ico" InterfaceType="LAN">
+    <IpAddress>192.168.32.11</IpAddress>
+    <DataPortNum>3333</DataPortNum>
+    <MessagePortNum>4444</MessagePortNum>
+    <OutputDataType>IQ</OutputDataType>
+    <DataStoreMode>ExternalStroe</DataStoreMode>
+    <DataStoreTime>0</DataStoreTime>
+    <SaveDataType>CSV</SaveDataType>
+  </Device>
+</DeviceConfiguration>

@@ -1,0 +1,502 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DeviceMangerModule</name>
+    </assembly>
+    <members>
+        <member name="F:DeviceMangerModule.FileDirectoryCheck.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.FileDirectoryCheck.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DeviceMangerModule.FileDirectoryCheck.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.FileDirectoryCheck.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.FileDirectoryCheck.CreateThePath_Click(System.Object,System.EventArgs)">
+            <summary>
+            创建路径事件
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+        <member name="M:DeviceMangerModule.FileDirectoryCheck.button1_Click(System.Object,System.EventArgs)">
+            <summary>
+            关闭当前窗体事件
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+        <member name="T:DeviceMangerModule.NewDevice">
+            <summary>
+            类NewDevice为设备管理的子窗体——新建设备界面
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.NewDevice.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.NewDevice.button2_Click(System.Object,System.EventArgs)">
+            <summary>
+            关闭按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.NewDevice.button_Connect_Click(System.Object,System.EventArgs)">
+            <summary>
+            添加新设备按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.NewDevice.comboBox_ConnecType_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            连接类型选项改变时改变界面布局和显示的方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:DeviceMangerModule.NewDevice.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.NewDevice.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DeviceMangerModule.NewDevice.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:DeviceMangerModule.DeviceManger">
+            <summary>
+            类DevcieManger为设备管理的主窗体，包含多设备的所有管理功能
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.Load">
+            <summary>
+            窗体的load方法，窗体加载时运行此方法
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.#ctor">
+            <summary>
+            构造函数，进行一些初始化操作和事件委托的挂载
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.init">
+            <summary>
+            设备管理模块初始化操作
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.ChangeDeviceState(DeviceMangerModule.Device,System.String)">
+            <summary>
+            改变设备状态
+            </summary>
+            <param name="tempDevice">设备名称</param>
+            <param name="state">状态值</param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceStateDisp(DeviceMangerModule.Device,System.String)">
+            <summary>
+            根据设备的连接状态变化在设备列76表的显示背景也随之变化
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.FindDevice(System.String)">
+            <summary>
+            查找设备
+            </summary>
+            <param name="deviceName"></param>
+            <returns>查找到的设备</returns>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.send(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            指定设备发送信息
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.ConnOkHandler(System.String)">
+            <summary>
+            当设备连接成功后设置设备的连接状态为已连接并开始数据接收和心跳检测
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceListViewDisplay">
+            <summary>
+            设备列表显示方法
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceListView_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            当设备选择不同时设备信息列表随之改变信息显示方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceListViewItem(System.String)">
+            <summary>
+            当添加新设备后在DeviceListView上添加新设备的项显示
+            </summary>
+            <param name="itemName">要添加的设备名称</param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceInfoListViewDisp(System.String)">
+            <summary>
+            设备信息列表显示方法
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceInfoList(System.String)">
+            <summary>
+            设备信息列表显示
+            </summary>
+            <param name="selectedDeviceName"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceInfoListViewDisplay(System.String)">
+            <summary>
+            设备信息列表显示
+            </summary>
+            <param name="selectedDeviceName"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.ChangeDeiveInfoListDisp(System.String)">
+            <summary>
+            改变设备信息列表显示信息
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.button_close_Click(System.Object,System.EventArgs)">
+            <summary>
+            关闭按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.button_config_Click(System.Object,System.EventArgs)">
+            <summary>
+            设备配置按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.button_NewDevice_Click(System.Object,System.EventArgs)">
+            <summary>
+            新建设备按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.button_connect_Click(System.Object,System.EventArgs)">
+            <summary>
+            连接按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.button_disconnect_Click(System.Object,System.EventArgs)">
+            <summary>
+            断开设备连接按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.button_RemoveDevice_Click(System.Object,System.EventArgs)">
+            <summary>
+            删除设备按钮单击处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.ReadDeviceInfoFromXMLToMemory">
+            <summary>
+            把设备配置信息从XML文件中读取到内存中存储
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.UpdateXMLFromMemory">
+            <summary>
+            从内存中把设备信息读取到文件中保存
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.DeviceManger_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+            当设备管理界面窗口关闭时的处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.ChangeStatus">
+            <summary>
+            改变状态
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.RebootThreadFun(DeviceMangerModule.Device)">
+            <summary>
+            重启线程
+            </summary>
+            <param name="connDevice"></param>
+        </member>
+        <member name="F:DeviceMangerModule.DeviceManger.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceManger.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:DeviceMangerModule.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:DeviceMangerModule.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:DeviceMangerModule.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:DeviceMangerModule.DeviceConfiguration">
+            <summary>
+            类DeviceConfiguration为设备管理的子界面——设备配置界面
+            </summary>
+        </member>
+        <member name="F:DeviceMangerModule.DeviceConfiguration.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.DeviceConfiguration_Load(System.Object,System.EventArgs)">
+            <summary>
+            窗体load方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.button_OK_Click(System.Object,System.EventArgs)">
+            <summary>
+            确定按钮单击时的处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.comboBox_DeviceName_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            当设备选择列表中设备选择改变时的处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.comboBox_InterfaceType_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            当接口类型改变时的处理方法
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.DeviceConfiguration.DeviceConfiguration_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            检测键盘输入操作
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:DeviceMangerModule.SaveBinaryDataFile">
+            <summary>
+            类SaveBinaryDataFile主要用于保存二进制数据,提供回放使用
+            存储的整体思路：建立一个临时文件存数据，用一个配置文件存储开始时间等头信息，最后点结束时
+            建立文件，写头，后将临时文件的内容写入文件。
+            </summary>
+            
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.#ctor">
+            <summary>
+            构造函数，委托挂载
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.init">
+            <summary>
+            变量初始化操作
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.CreateFileName">
+            <summary>
+            新建日志文件和保存数据的临时文件
+            </summary>     
+            
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.ShowFileInListView">
+            <summary>
+            在左边文档结构视图中添加新建的日志文件
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.CalMsgLen">
+            <summary>
+            计算头长度
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.WriteFile">
+            <summary>
+            写日志文件
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.writeHeaderFile">
+            <summary>
+            写文件加头信息，此中头信息的结束时间是错误信息
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.changeHeader">
+            <summary>
+            修改头信息，主要是由于头中的结束时间是错误的
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.SaveBinaryDataFile.SaveData(System.Byte[])">
+            <summary>
+            把发送和接收到的数据存储到临时文件中
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:DeviceMangerModule.TcpClientConnectorHelp.Connect(System.String,System.Int32,System.Int32)">
+              <summary>     
+              在指定时间内尝试连接指定主机上的指定端口。     
+              </summary>     
+              <param   name="hostname">要连接到的远程主机的   DNS   名。</param>     
+              <param   name="port">要连接到的远程主机的端口号。</param>     
+              <param   name="millisecondsTimeout">要等待的毫秒数，或   -1   表示无限期等待。</param>     
+              <returns>已连接的一个   TcpClient   实例。</returns>     
+              <remarks>本方法可能抛出的异常与   TcpClient   的构造函数重载之一     
+              public   TcpClient(string,   int)   相同，并若指定的等待时间是个负数且不等于     
+              -1，将会抛出   ArgumentOutOfRangeException。</remarks>     
+        </member>
+        <member name="M:DeviceMangerModule.TcpClientConnectorHelp.ConnectThreaded(System.Object)">
+            <summary>
+            连接线程
+            </summary>
+            <param name="state"></param>
+        </member>
+        <member name="T:DeviceMangerModule.ConnectorState">
+            <summary>
+            连接状态类
+            </summary>
+        </member>
+        <member name="T:DeviceMangerModule.Device">
+            <summary>
+            类Device为设备类包含设备所有的功能和属性
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.Device.#ctor">
+            <summary>
+            构造函数，用于初始化设备连接状态和定时器
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.Device.NewMessageConn">
+            <summary>
+            新建设备连接
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.Device.sendMessage(System.Object)">
+            <summary>
+            设备异步发送消息
+            </summary>
+            <param name="message">消息内容</param>
+        </member>
+        <member name="M:DeviceMangerModule.Device.WriteCompled(System.IAsyncResult)">
+            <summary>
+            异步发送消息回调函数
+            </summary>
+            <param name="ar"></param>
+        </member>
+        <member name="M:DeviceMangerModule.Device.AckDataHander(System.Byte[],System.Int32)">
+            <summary>
+            ACK处理
+            </summary>
+            <param name="buffer">接收ACK的buffer</param>
+            <param name="receiveDateLength">接收的数据长度</param>
+            <returns></returns>
+        </member>
+        <member name="F:DeviceMangerModule.Device.dataRecv">
+            <summary>
+            设备数据端口数据接收
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.Device.DataRecv">
+            <summary>
+            设备数据端口数据接收函数
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.Device.DataRecvThread">
+            <summary>
+            数据接收线程
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.Device.checkHeart(System.DateTime)">
+            <summary>
+            检测心跳
+            </summary>
+            <param name="lastTime"></param>
+        </member>
+        <member name="M:DeviceMangerModule.Device.Timer_Elapsed(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            检测心跳，大于6秒断开重连
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:DeviceMangerModule.Device.SendStatusToMainForm">
+            <summary>
+            发送设备的状态信息给主窗体
+            </summary>
+        </member>
+        <member name="M:DeviceMangerModule.Device.CloseDeviceConn">
+            <summary>
+            关闭设备连接，释放资源
+            </summary>
+        </member>
+    </members>
+</doc>

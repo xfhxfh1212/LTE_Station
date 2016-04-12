@@ -1,0 +1,691 @@
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Windows.Forms;
+using COM.ZCTT.AGI.Common;
+using AGIInterface;
+using System.Diagnostics;
+using System.Threading;
+using System.Timers;
+
+namespace DeviceMangerModule
+{
+    /// <summary>
+    /// 类Device为设备类包含设备所有的功能和属性
+    /// </summary>
+    public class Device
+    {
+        #region 变量属性定义
+        private string deviceName;
+        private IPAddress ipAddress;
+        private int messagePortNum;
+        private int dataPortNum;
+        private byte portType;
+        private byte outputDataType;
+        private byte dataStoreMode;
+        private byte dataStoreType;
+        private UInt16 dataStoreTime;//单位为ms
+        private byte connectionState ;
+        private string imageKey ;
+        private string versionNumber;//版本号
+        private string remainingPower;//剩余电量
+        private byte deviceWorkModel ;
+        private byte deviceInstrumentState;
+        private bool heartCheckStart = false;
+        private int connectcount = 0;
+        TcpClient tcpClient = null;
+        NetworkStream messageStream = null;
+        TcpClient dataRecvClient = null;
+        NetworkStream dataStrem = null;
+        public System.Timers.Timer timer = new System.Timers.Timer();
+        static DateTime lastTime;
+        private bool isDisconnect = true;
+
+        static int count = 0;
+        //static bool FirstTime = true;// 计算相对时间使用，看是否为第一次
+        static uint TimeStampLBase = 0; //基准TimeStampL
+        static DateTime TimeBase = new DateTime();  //基准时间
+        static DateTime NowTime = new DateTime();//当前时间
+
+        public bool HeartCheckStart
+        {
+            get { return heartCheckStart; }
+            set { heartCheckStart = value; }
+        }
+        public byte DeviceInstrumentState
+        {
+            get { return deviceInstrumentState; }
+            set { deviceInstrumentState = value; }
+        }
+        public byte DeviceWorkModel
+        {
+            get { return deviceWorkModel; }
+            set { deviceWorkModel = value;}
+        }
+        public string RemainingPower
+        {
+            get { return remainingPower; }
+            set { remainingPower = value;}
+        }
+        public string VersionNumber
+        {
+            get { return versionNumber;}
+            set { versionNumber = value; }
+        }
+        public string ImageKey
+        {
+            get { return imageKey; }
+            set { imageKey = value; }
+        }
+        public byte ConnectionState
+        {
+            get { return connectionState; }
+            set {
+                if((value==0)||(value==1))
+                connectionState = value; }
+        }
+        public string DeviceName
+        {
+            get { return deviceName; }
+            set { deviceName = value; }
+        }
+        public string IpAddress
+        {
+            get { return ipAddress.ToString(); }
+            set {
+                IPAddress ip=null;
+                if (IPAddress.TryParse((string)value, out ip))
+                    ipAddress = ip;
+                else
+                    MessageBox.Show("IP is not avalid!");
+            }
+        }
+        public int MessagePortNum
+        {
+            get { return messagePortNum; }
+            set { messagePortNum = value; }
+        }
+        public int DataPortNum
+        {
+            get { return dataPortNum; }
+            set { dataPortNum = value; }
+        }
+        public  byte PortType
+        {
+            get { return portType; }
+            set { portType = value; }
+        }
+        public  byte OutputDataType 
+        {
+            get { return outputDataType;}
+            set { outputDataType = value; }
+        }
+        public byte DataStoreMode 
+        {
+            get { return dataStoreMode; }
+            set { dataStoreMode = value; }
+        }
+        public byte DataStoreType
+        {
+            get { return dataStoreType; }
+            set { dataStoreType = value; }
+        }
+        public UInt16 DataStoreTime 
+        {
+            get { return dataStoreTime; }
+            set { dataStoreTime = value; }
+        }
+        #endregion
+
+        /// <summary>
+        /// 构造函数，用于初始化设备连接状态和定时器
+        /// </summary>
+        public Device()
+        {
+            connectionState = (byte)Global.DeviceStateValue.Disconnection;
+            imageKey = "disconnect.ico";
+            timer.Interval = 6000;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(Timer_Elapsed);
+            timer.Enabled = false;
+        }
+        //int flag = 0;
+        #region 建立连接部分
+       /// <summary>
+       /// 新建设备连接
+       /// </summary>
+        public void NewMessageConn()
+        {
+            //timer.Enabled = true;
+            try
+            {
+                tcpClient = TcpClientConnectorHelp.Connect(ipAddress.ToString(),messagePortNum,2000 );
+                DataRecv();//////////////////////
+                //debug
+                System.Diagnostics.Debug.WriteLine("Tcp connected>>>>>>>>>>>>>>>>");
+                ////如果连接成功，改变设备底色为绿色
+                //if (AGIInterface.Class1.OnConnOk != null)
+                //    AGIInterface.Class1.OnConnOk(this.deviceName);
+                //SendStatusToMainForm();
+                isDisconnect = false;
+                lastTime = DateTime.Now;
+                messageStream = tcpClient.GetStream();
+                //请求获取设备工作状态
+                try
+                {
+                    byte[] getAGTInfo = new byte[] { 0, 0, 0, 0, 0, 0, 0x01, 0x40, 0, 0, 0,0};
+                    sendMessage(getAGTInfo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to config the remote device:" + ex.Message);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Tcp connect failed");
+                if (AGIInterface.Class1.OnChangeDeviceInfoList != null)
+                    AGIInterface.Class1.OnChangeDeviceInfoList("exception");
+            }
+        }
+        #endregion
+        #region 发送消息部分以及ACK处理
+        /// <summary>
+        /// 设备异步发送消息
+        /// </summary>
+        /// <param name="message">消息内容</param>
+        public  void sendMessage(object message)
+        {
+            byte[] sendData = (byte[])message;
+            //string SendMsg = sendData.ToString();
+            AsyncCallback writeCallback = new AsyncCallback(WriteCompled);
+            try
+            {
+                if (messageStream != null)
+                    messageStream.BeginWrite(sendData, 0, sendData.Length, writeCallback, sendData);
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+        }
+        /// <summary>
+        /// 异步发送消息回调函数
+        /// </summary>
+        /// <param name="ar"></param>
+        private void WriteCompled(IAsyncResult ar)
+        {
+            try
+            {
+                messageStream.EndWrite(ar);   
+                byte[] sendMessage = (byte[])ar.AsyncState;
+                System.Diagnostics.Debug.WriteLine("Send a message success!");
+                //保存二进制数据
+                if (AGIInterface.Class1.OnSaveData != null)
+                    AGIInterface.Class1.OnSaveData(sendMessage);
+                byte[] recvByte = new byte[256];
+                int byteCount = messageStream.Read(recvByte, 0, recvByte.Length);
+                AckDataHander(recvByte, byteCount);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("receive ACK failed! "+ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// ACK处理
+        /// </summary>
+        /// <param name="buffer">接收ACK的buffer</param>
+        /// <param name="receiveDateLength">接收的数据长度</param>
+        /// <returns></returns>
+        private int AckDataHander(byte[] buffer, int receiveDateLength)
+        {
+            if (receiveDateLength >= 12)
+            {
+                UInt16 msgLength = System.BitConverter.ToUInt16(buffer,10);
+                int bodyCount = msgLength * 4;
+                if (bodyCount == 4)//标准ACK响应
+                {
+                    if (buffer[12] == 1)//ACK失败
+                    {
+                        MessageBox.Show("Message ACK failed!");
+                        return 1;
+                    }
+                }
+                //需要特殊处理的ACK响应
+                UInt16 msgType = System.BitConverter.ToUInt16(buffer,6); 
+                System.Diagnostics.Debug.WriteLine(" receive a ACK ,msg type :  " + Convert.ToString(msgType, 16));
+                ///////////////////////////////////////
+                if (Convert.ToString(msgType, 16) == "ffff" && receiveDateLength == 12&&buffer[0]==0x48&&buffer[1]==0xc&&buffer[2]==0xf4&&buffer[3]==0x7e&&buffer[4]==0x2&&buffer[5]==0x4&&buffer[6]==0xff&&buffer[7]==0xff&&buffer[8]==0&&buffer[9]==0&&buffer[10]==0&&buffer[11]==0 )
+                {
+                    //######查看收到的0000消息########
+                    //AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+                    //ce.data = buffer;
+                    //Global.tempClass.SendDataToDebug(this, ce);
+                    //#####################
+                    MessageBox.Show("The Instrument has been connected by another AGI!");
+                    if (AGIInterface.Class1.OnChangeDeviceInfoList != null)
+                        AGIInterface.Class1.OnChangeDeviceInfoList("exception");
+                }
+                else
+                {
+                    if (connectcount == 0)
+                    {
+                        if (!Global.connectionStatus)
+                        {
+                            //如果连接成功，改变设备底色为绿色
+                            if (AGIInterface.Class1.OnConnOk != null)
+                                AGIInterface.Class1.OnConnOk(this.deviceName);
+                            //SendStatusToMainForm();
+                        }
+                    }  
+                }
+                //////////////////////////////////////////
+                
+                switch (msgType)
+                {
+                    //获取设备状态消息的ACK消息
+                    case COM.ZCTT.AGI.Common.AGIMsgDefine.AG_PC_GET_AGT_INFO_REQ_ACK_MSG_TYPE:
+                        {
+                            this.deviceInstrumentState = buffer[12];
+                            this.deviceWorkModel = buffer[13];
+                            this.PortType = buffer[14];
+                            this.OutputDataType = buffer[15]; 
+                            this.DataStoreMode = buffer[16];
+                            //按照新的接口协议，下面的处理是错误的，如果需要获取值，请参看新接口协议
+                            //16 saveTime = System.BitConverter.ToUInt16(buffer,20); 
+                            //this.dataStoreTime = saveTime;
+                            //this.remainingPower =Convert.ToInt16((byte)buffer[19]).ToString();UInt
+                            if(this.deviceInstrumentState==1)
+                                if (Global.isReboot == true)
+                                {
+                                    byte[] stop = new byte[] { 0, 0, 0, 0, 4, 2, 0x0a, 0x40, 1, 0, 0, 0 };
+                                    sendMessage(stop);
+                                   // CloseDeviceConn();
+                                }
+                            //发送设备状态信息到主程序
+                            SendStatusToMainForm();
+                            break;
+                        }
+                    default: break;
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("ACK is not the right format!");
+            }
+            return 0;
+        }
+        #endregion
+
+        #region 数据接收部分
+        /// <summary>
+        /// 设备数据端口数据接收
+        /// </summary>
+        Thread dataRecv;
+        /// <summary>
+        /// 设备数据端口数据接收函数
+        /// </summary>
+        public void DataRecv()
+        {
+            dataRecv = new Thread(new ThreadStart(DataRecvThread));
+            dataRecv.IsBackground = true;
+            //Control.CheckForIllegalCrossThreadCalls = false;
+            dataRecv.Start();
+        }
+
+        /// <summary>
+        /// 数据接收线程
+        /// </summary>
+        private void DataRecvThread()
+        {
+            dataRecvClient = new TcpClient();
+            try
+            {
+                dataRecvClient.Connect(ipAddress, dataPortNum);
+                dataStrem = dataRecvClient.GetStream();
+
+            }
+            catch (Exception ex)
+            {
+                CloseDeviceConn();
+                //////////////////////////////////
+                SendStatusToMainForm();
+                if (AGIInterface.Class1.OnChangeDeviceInfoList != null)
+                    AGIInterface.Class1.OnChangeDeviceInfoList("exception");
+                ////////////////////////////////////
+            }
+            while (true)
+            {
+                
+                try
+                {
+                    //先收头，再收数据
+                    lastTime = DateTime.Now;//收到任何数据都表示没有断开连接
+                    byte[] dataBuffer = new byte[10240];
+                    int headerLen = dataStrem.Read(dataBuffer, 0, 12);
+                    while (headerLen < 12)
+                    {
+                        headerLen += dataStrem.Read(dataBuffer, headerLen, 12 - headerLen);
+                    }
+                    UInt16 msgLength = System.BitConverter.ToUInt16(dataBuffer,10);
+                    UInt16 msgType = System.BitConverter.ToUInt16(dataBuffer,6);
+                    int bodyCount = msgLength * 4;
+                    int bodyReadLen = dataStrem.Read(dataBuffer, 12, bodyCount);
+                    while (bodyReadLen < bodyCount)//如果一次没有接收完成再继续接收
+                    {
+                        bodyReadLen += dataStrem.Read(dataBuffer, 12 + bodyReadLen, bodyCount - bodyReadLen);
+                    }
+                    int receivedDataLength = bodyReadLen + 12;
+                    byte[] receivedData = new byte[receivedDataLength];
+                    Array.Copy(dataBuffer,receivedData,receivedDataLength);
+                    //Debug Output
+                    System.Diagnostics.Debug.WriteLine("receive a data , msgType : " + Convert.ToString(msgType, 16) + "  dataLength : " + receivedDataLength);
+                 
+                    if (msgType != 0x8001)
+                    {
+                        if (msgType == 0x480a || msgType == 0x480b || msgType == 0x400a)/* V1.0 */
+                        {
+
+                        }
+                        switch (msgType)
+                        {
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L1_SPECIFIED_CELL_SCAN_DATA_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L1_UNSPECIFIED_CELL_SCAN_DATA_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_UNSPECIFIED_CELL_SCAN_DATA_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_SPECIFIED_CELL_SCAN_DATA_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.AG_PC_SPECIFIED_CELL_SCAN_FINISH_IND_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_AG_SPECIFIED_CELL_SCAN_REQ_ACK_MSG_TYPE:
+                                {
+                                    AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+                                    ce.data = receivedData;
+                                    Global.tempClass.SendDataToCellScan(this, ce);
+                                    break;
+                                }
+                            case 0x8002://心跳
+                                {
+                                    //lastTime = DateTime.Now;
+                                    connectcount = 0;
+                                    break;
+                                }
+                            //case COM.ZCTT.AGI.Common.AGIMsgDefine.L1_AG_DEBUG_INFO_DATA_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.AG_PC_DEBUG_INFO_REQ_ACK_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_DEBUG_INFO_DATA_MSG_TYPE:
+                                {
+                                    AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+                                    ce.data = receivedData;
+                                    Global.tempClass.SendDataToDebug(this, ce);
+                                    break;
+                                }
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L1_AG_DEBUG_INFO_DATA_MSG_TYPE:
+                            //case COM.ZCTT.AGI.Common.AGIMsgDefine.AG_PC_DEBUG_INFO_REQ_ACK_MSG_TYPE:
+                            //case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_DEBUG_INFO_DATA_MSG_TYPE:
+                                {
+                                    AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+                                    ce.data = receivedData;
+                                    Global.tempClass.SendDataToDebug(this, ce);
+                                    break;
+                                }
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.XX_PROTOCOL_DATA_MSG_TYPE://AG_PC_PROTOCOL_DATA_MSG_TYPE  
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.AG_XX_PROTOCOL_TRACE_REL_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_AG_CELL_CAPTURE_IND_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_AG_CELL_SYSINFO_IND_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_AG_CELL_STATE_IND_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_AG_UE_CAPTURE_IND_MSG_TYPE:
+                                {
+                                    byte[] data = new byte[4];
+                                    if (Global.FirstTime == true)
+                                    {
+                                        TimeBase = DateTime.Now;                            //得到PC基准时间    
+                                        data[0] = receivedData[16];
+                                        data[1] = receivedData[17];
+                                        data[2] = receivedData[18];
+                                        data[3] = receivedData[19];
+                                        TimeStampLBase = BitConverter.ToUInt32(data, 0);    //得到基准TimeStampL   
+                                        
+                                        NowTime = TimeBase;
+                                        Global.FirstTime = false;
+                                        count++;
+                                    }
+                                    else
+                                    {
+                                        data[0] = receivedData[16];
+                                        data[1] = receivedData[17];
+                                        data[2] = receivedData[18];
+                                        data[3] = receivedData[19];
+                                        uint temp = BitConverter.ToUInt32(data, 0);
+                                        double Time_Lapse = (double)(temp - TimeStampLBase);  //计算时间差
+                                        NowTime = TimeBase.AddMilliseconds(Time_Lapse);     //计算当前相对时间
+                                    }
+
+                                    if (receivedDataLength > 12)
+                                    {
+                                        int H = NowTime.Hour;//获取小时
+                                        int M = NowTime.Minute;//获取分钟
+                                        int S = NowTime.Second;//获取秒
+                                        int Ms = NowTime.Millisecond;//获取毫秒
+                                        receivedData[12] = (byte)S;//替换原始数据
+                                        receivedData[13] = (byte)M;
+                                        receivedData[14] = (byte)H;
+                                        receivedData[15] = 0;
+                                        if (Ms <= 255)
+                                        {
+                                            receivedData[16] = (byte)Ms;
+                                            receivedData[17] = 0;
+                                            receivedData[18] = 0;
+                                            receivedData[19] = 0;
+                                        }
+                                        else
+                                        {
+                                            receivedData[16] = (byte)(Ms & 0xff);
+                                            receivedData[17] = (byte)((Ms >> 8) & 0xff);
+                                            receivedData[18] = 0;
+                                            receivedData[19] = 0;
+                                        }
+                                    }
+                                    AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+                                    ce.data = receivedData;
+                                    ce.deivceName = "AGT";
+                                    //Global.tempClass.SendDataToDebug(this, ce);
+                                    if (msgType == COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_AG_CELL_SYSINFO_IND_MSG_TYPE)
+                                    {
+                                        Global.tempClass.SendDataToCellSysSplit(this, ce);
+                                    }
+                                    else
+                                    Global.tempClass.SendDataToProTrack(this, ce);
+                                    break;
+                                }
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.AG_PC_PROTOCOL_TRACE_REQ_ACK_MSG_TYPE:
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.AG_PC_PROTOCOL_TRACE_REL_ACK_MSG_TYPE:
+                                {
+                                    AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+                                    ce.data = receivedData;
+                                    ce.deivceName = "AGT";
+                                    //Global.tempClass.SendDataToDebug(this, ce);
+                                    Global.tempClass.SendDataToProTrack(this, ce);
+                                    break;
+                                }
+                            case COM.ZCTT.AGI.Common.AGIMsgDefine.L2P_PROTOCOL_DATA_MSG_TYPE://AG_PC_PROTOCOL_DATA_MSG_TYPE 
+                                {
+                                    byte[] data = new byte[4];
+                                    if (Global.FirstTime == true)
+                                    {
+                                        TimeBase = DateTime.Now;                            //得到PC基准时间    
+                                        data[0] = receivedData[16];
+                                        data[1] = receivedData[17];
+                                        data[2] = receivedData[18];
+                                        data[3] = receivedData[19];
+                                        TimeStampLBase = BitConverter.ToUInt32(data, 0);    //得到基准TimeStampL   
+                                        NowTime = TimeBase;
+                                        Global.FirstTime = false;
+                                        count++;
+                                    }
+                                    else
+                                    {
+                                        data[0] = receivedData[16];
+                                        data[1] = receivedData[17];
+                                        data[2] = receivedData[18];
+                                        data[3] = receivedData[19];
+                                        uint temp = BitConverter.ToUInt32(data, 0);
+                                        double Time_Lapse = (double)(temp - TimeStampLBase);  //计算时间差
+                                        NowTime = TimeBase.AddMilliseconds(Time_Lapse);      //计算当前相对时间
+                                    }
+                                    if (receivedDataLength > 12)
+                                    {
+                                        int H = NowTime.Hour;//获取小时
+                                        int M = NowTime.Minute;//获取分钟
+                                        int S = NowTime.Second;//获取秒
+                                        int Ms = NowTime.Millisecond;//获取毫秒
+                                        receivedData[12] = (byte)S;//替换原始数据
+                                        receivedData[13] = (byte)M;
+                                        receivedData[14] = (byte)H;
+                                        receivedData[15] = 0;
+                                        if (Ms <= 255)
+                                        {
+                                            receivedData[16] = (byte)Ms;
+                                            receivedData[17] = 0;
+                                            receivedData[18] = 0;
+                                            receivedData[19] = 0;
+                                        }
+                                        else
+                                        {
+                                            receivedData[16] = (byte)(Ms & 0xff);
+                                            receivedData[17] = (byte)((Ms >> 8) & 0xff);
+                                            receivedData[18] = 0;
+                                            receivedData[19] = 0;
+                                        }
+                                    }
+                                    //.......................
+                                    AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+                                    ce.data = receivedData;
+                                    ce.deivceName = "AGT";
+                                    //Global.tempClass.SendDataToDebug(this, ce);
+                                    Global.tempClass.SendDataToProTrack(this, ce);
+                                    break;
+                                }
+                            default: break;
+                        }
+                    }
+                    //if (msgType != 0x8002)//心跳信息
+                    //{
+                        if (AGIInterface.Class1.OnSaveData != null)
+                           AGIInterface.Class1.OnSaveData(receivedData);
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    break;
+                }
+            }
+
+        }
+      
+        #endregion
+
+        /// <summary>
+        /// 检测心跳
+        /// </summary>
+        /// <param name="lastTime"></param>
+        private void checkHeart(DateTime lastTime)
+        {
+            DateTime nowTime = DateTime.Now;
+            TimeSpan ts = nowTime - lastTime;
+            if (ts.TotalSeconds > 6)
+            {
+                CloseDeviceConn();
+                //////////////////////////
+                Global.connectionStatus = false;
+                SendStatusToMainForm();
+                if (AGIInterface.Class1.OnChangeDeviceInfoList != null)
+                    AGIInterface.Class1.OnChangeDeviceInfoList("exception");
+                /////////////////////////////
+                isDisconnect = true;
+                SendStatusToMainForm();
+                NewMessageConn();
+                lastTime = DateTime.Now;
+                connectcount++;
+                if (connectcount > 10)
+                {
+                    timer.Enabled = false;
+                    connectcount = 0;
+                    CloseDeviceConn();
+                    SendStatusToMainForm();
+                    HeartCheckStart = false;
+                    if (AGIInterface.Class1.OnChangeDeviceInfoList != null)
+                        AGIInterface.Class1.OnChangeDeviceInfoList("exception");
+                }
+
+            }
+        }
+        /// <summary>
+        /// 检测心跳，大于6秒断开重连
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+                checkHeart(lastTime);
+                if (!isDisconnect)
+                {
+                    byte[] getAGTInfo = new byte[] { 0, 0, 0, 0, 0, 0, 0x01, 0x40, 0, 0, 0, 0 };
+                    sendMessage(getAGTInfo);
+                }
+        }
+
+        /// <summary>
+        /// 发送设备的状态信息给主窗体
+        /// </summary>
+        private void SendStatusToMainForm()
+        {
+            AGIInterface.CustomDataEvtArg ce = new CustomDataEvtArg();
+            ce.deviceConnStaus = (this.connectionState == 0) ? "Connected" : "Disconnected";
+            Global.connectionStatus = (this.connectionState == 0) ? true : false;
+            ce.deivceName = this.deviceName;
+            if (ce.deviceConnStaus == "Disconnected")
+            {
+                ce.deviceInstumentState = " ";
+                ce.deviceWorkModel = " ";
+            }
+            else
+            {
+                ce.deviceInstumentState = (this.deviceInstrumentState == 0) ? "IDLE" : "Working";
+                //2014.4.15 stop按钮和状态异常
+                if (Global.testMode == Global.TestMode.RealTime && ce.deviceInstumentState == "IDLE")
+                {
+                    Global.testStatus = Global.TestStatus.Stop;
+                }
+                ce.deviceWorkModel = (this.deviceWorkModel == 1) ? "Cell Scanning" : "Protocol Tracking";
+            }
+            ce.remainingPower = this.remainingPower;
+            Global.tempClass.SendStatusToMainForm(this, ce);
+        }
+        /// <summary>
+        /// 关闭设备连接，释放资源
+        /// </summary>
+        public void CloseDeviceConn()
+        {
+            if (messageStream != null)
+                messageStream.Dispose();
+            if (tcpClient != null)
+                tcpClient.Close();
+            if (dataStrem != null)
+                dataStrem.Dispose();
+            if (dataRecvClient != null)
+                dataRecvClient.Close();
+            tcpClient = null;
+            messageStream = null;
+            dataRecvClient = null;
+            dataStrem = null;
+            if (dataRecv != null)
+                dataRecv.Abort();
+            this.ConnectionState = (byte)Global.DeviceStateValue.Disconnection;
+           
+            if (AGIInterface.Class1.OnConnWrong != null)
+                AGIInterface.Class1.OnConnWrong(this.deviceName);
+            //debug
+            System.Diagnostics.Debug.WriteLine("Disconnected<<<<<<<<<<<<<<<<");
+        }
+    }
+}

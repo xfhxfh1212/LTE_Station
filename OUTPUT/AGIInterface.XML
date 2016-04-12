@@ -1,0 +1,469 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AGIInterface</name>
+    </assembly>
+    <members>
+        <member name="T:AGIInterface.CustomDataEvtArg">
+            <summary>
+            自定义事件参数定义
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.deviceConnStaus">
+            <summary>
+            连接状态
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.deviceInstumentState">
+            <summary>
+            设备状态
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.deviceWorkModel">
+            <summary>
+            工作模式
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.remainingPower">
+            <summary>
+            电池状态
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.data">
+            <summary>
+            接收数据
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.deivceName">
+            <summary>
+            设备名称
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.moduleName">
+            <summary>
+            用来区别接收“开始”和“结束”事件的模块：ProtocolTrace、CellSacn
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.readyModule">
+            <summary>
+            用来区别准备好的模块：ProtocolTrace、CellScan
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.configFile">
+            <summary>
+            用来发送“小区扫描”和“协议跟踪”配置文件的文件名
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.filter">
+             <summary>
+            协议跟踪过滤发送事件的参数
+             </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.listFilter">
+            <summary>
+            MessageType和LayerType都包含在里面
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.changedFilter">
+            <summary>
+            发生改变的filter
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.changedFilterVisible">
+            <summary>
+            发生改变的filter是否选中
+            </summary>
+        </member>
+        <member name="F:AGIInterface.CustomDataEvtArg.isRealTime">
+            <summary>
+            区分开始的是实时模式还是回放模式。
+            true：实时
+            false：回放
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1">
+            <summary>
+            主程序模块
+            </summary>
+        </member>
+        <member name="F:AGIInterface.Class1.OnChangeDeviceInfoList">
+            <summary>
+            更改设备信息列表事件
+            </summary>
+        </member>
+        <member name="F:AGIInterface.Class1.OnSaveData">
+            <summary>
+            保存数据到二进制logFile中事件
+            </summary>
+        </member>
+        <member name="F:AGIInterface.Class1.OnConnOk">
+             <summary>
+            点击连接OK按钮事件
+             </summary>
+        </member>
+        <member name="F:AGIInterface.Class1.OnConnWrong">
+             <summary>
+            点击断开连接按钮事件
+             </summary>
+        </member>
+        <member name="F:AGIInterface.Class1.OnChangDeviceListView">
+             <summary>
+            添加设备后改变设备显示列表事件
+             </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.CloseDisplayForm">
+            <summary>
+            关闭Display窗口
+            </summary>
+            
+        </member>
+        <member name="M:AGIInterface.Class1.RefreshTreeview">
+            <summary>
+            刷新日志列表TREE
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.CloseDecode">
+            <summary>
+            关闭解码窗口
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendStatusToMainForm(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到主窗口
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendACKToCellSearch(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送ACK到搜索窗口
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToCellScan(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到小区扫描模块
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToProTrack(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到协议跟踪模块
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToRSRPGraph(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到RSRPGraph模块
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToSTMSIGraph(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到STMSIGraph模块
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToDebug(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到Debug模块
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToDevice(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到设备模块
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToCellSysSplit(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送数据到小区消息分离模块
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.Ready(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            准备测试事件
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+        <member name="F:AGIInterface.Class1.ClearForm">
+            <summary>
+            清屏
+            </summary>
+        </member>
+        <member name="M:AGIInterface.Class1.Start(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            开始测试事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:AGIInterface.Class1.Stop(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            停止测试事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:AGIInterface.Class1.SendDataToDecode(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            发送事件到MIB解析界面
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+        <member name="M:AGIInterface.Class1.FilterChanged(System.Object,AGIInterface.CustomDataEvtArg)">
+            <summary>
+            点击Filter按钮，改变Filter事件
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+        <member name="M:AGIInterface.Class1.OnDebugConfigOK(AGIInterface.CustomDataEvtArg)">
+            <summary>
+            配置“调试”完成的事件。调试配置界面中点击“OK”按钮，通知主程序
+            </summary>
+            <param name="e">无</param>
+        </member>
+        <member name="M:AGIInterface.Class1.StartDebug(AGIInterface.CustomDataEvtArg)">
+            <summary>
+            开始“调试”的事件
+            </summary>
+            <param name="e">无</param>
+        </member>
+        <member name="M:AGIInterface.Class1.StopDebug(AGIInterface.CustomDataEvtArg)">
+            <summary>
+            停止调试事件
+            </summary>
+            <param name="e">无</param>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToCellScanEvent">
+             <summary>
+            把通信模块接收到的数据发送给小区扫描模块事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToProTrackEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToRSRPGraphEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToSTMSIGraphEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToDebugEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToDeviceEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToCellSysSplitEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendStatusToMainFormEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendACKToCellSearchEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.CloseDecodeEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.RefreshTreeviewEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.CloseDisplayFormEvent">
+             <summary>
+            事件
+             </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.ReadyEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.StartEvent">
+            <summary>
+            启动事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.StopEvent">
+            <summary>
+            停止事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.SendDataToDecodeEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.FilterChangedEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.DebugConfigOKEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.StartDebugEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="E:AGIInterface.Class1.StopDebugEvent">
+            <summary>
+            事件
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.ChangeDeviceInfoList">
+            <summary>
+            更改设备信息列表
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.SaveDataHandler">
+            <summary>
+            保存数据到二进制logFile中
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.ConnOKHandler">
+             <summary>
+            设备连接成功后调用此委托通知DeviceManger连接成功
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.ConnDiscHandler">
+             <summary>
+            设备连接成功后调用此委托通知DeviceManger连接成功
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.ChangeDeviceListViewHandler">
+             <summary>
+            添加设备后改变设备显示列表
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.DeviceSendDataToCellScanHandler">
+             <summary>
+            把通信模块接收到的数据发送给小区扫描模块委托
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.DeviceSendDataToProTrackHandler">
+             <summary>
+            把通信模块接收到的数据发送给协议跟踪模块委托
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.ProTrackSendDataToRSRPGraphHandler">
+            <summary>
+            把ProtocolTracking中接收到的UE上下行数据发送给RSRPGraph模块
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.ProTrackSendDataToSTMSIGraphHandler">
+            <summary>
+            把ProtocolTracking中接收到的STMSI数据发送给STMSIGraph模块
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.DeviceSendDataToDebugHandler">
+             <summary>
+            把通信模块接收到的数据发送给调试模块委托
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.SendDataToDeviceHandler">
+             <summary>
+            其他模块向设备模块发送消息数据使用事件委托
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.SendDataToCellSysSplitHandler">
+             <summary>
+            Cell_SysInfo拆分委托
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.DeviceSendStatusToMainForm">
+             <summary>
+            把设备的工作状态等信息发送给主程序委托
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.DeviceSendACKToCellSearch">
+             <summary>
+            把设备的ACK信息发送给搜索窗口
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.CloseDecodeHandler">
+             <summary>
+            关闭解码窗口事件委托
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.RefreshTreeviewHandler">
+             <summary>
+            协议跟踪stop刷新treeview
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.CloseDisplayFormHander">
+             <summary>
+            关闭协议跟踪窗口
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.ReadyHandler">
+            <summary>
+            准备、开始、停止测试
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.StartHandler">
+            <summary>
+            启动事件委托
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+        <member name="T:AGIInterface.Class1.StopHandler">
+            <summary>
+            停止测试事件
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:AGIInterface.Class1.SendDataToDecodeHandler">
+            <summary>
+            发送事件到MIB解析界面委托
+            </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.FilterChangedHandler">
+             <summary>
+            发送事件到MIB解析界面
+             </summary>
+             <param name="sender">无</param>
+             <param name="e">无</param>
+        </member>
+        <member name="T:AGIInterface.Class1.DebugConfigOK">
+             <summary>
+            配置“调试”完成的事件。调试配置界面中点击“OK”按钮，通知主程序
+             </summary>
+        </member>
+        <member name="T:AGIInterface.Class1.StartDebugHandler">
+            <summary>
+            开始“调试”的事件
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+        <member name="T:AGIInterface.Class1.StopDebugHandler">
+            <summary>
+            停止调试事件
+            </summary>
+            <param name="sender">无</param>
+            <param name="e">无</param>
+        </member>
+    </members>
+</doc>
